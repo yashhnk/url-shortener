@@ -1,10 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'url-shortener-app'
+        CONTAINER_NAME = 'url-shortener-container'
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git credentialsId: '169a99cd-3944-4994-bd72-e8771f1b6b8b', url: 'https://github.com/yashhnk/url-shortener.git', branch: 'main'
+                git credentialsId: '169a99cd-3944-4994-bd72-e8771f1b6b8b', url: 'https://github.com/yashhnk/url-shortener.git'
             }
         }
 
@@ -16,13 +21,16 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t url-shortener-app .'
+                sh "docker build -t ${IMAGE_NAME} ."
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 8080:8080 url-shortener-app'
+                sh """
+                    docker rm -f ${CONTAINER_NAME} || true
+                    docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${IMAGE_NAME}
+                """
             }
         }
     }
