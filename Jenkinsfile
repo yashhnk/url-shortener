@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: '169a99cd-3944-4994-bd72-e8771f1b6b8b', url: 'https://github.com/yashhnk/url-shortener.git'
+                git branch: 'main', credentialsId: '169a99cd-3944-4994-bd72-e8771f1b6b8b', url: 'https://github.com/yashhnk/url-shortener.git'
             }
         }
 
