@@ -13,13 +13,14 @@ public class UrlShortenerController {
 
     private HashMap<String, String> map = new HashMap<>();
 
-    @PostMapping("/shorten")
-    @Counted("shorten_requests_total")
-    public String shorten(@RequestBody String originalUrl) {
-        String shortId = UUID.randomUUID().toString().substring(0, 6);
-        map.put(shortId, originalUrl);
-        return shortId;
-    }
+	@PostMapping("/shorten")
+	@Counted("shorten_requests_total")
+	public ResponseEntity<String> shorten(@RequestParam("url") String originalUrl) {
+    		String shortId = UUID.randomUUID().toString().substring(0, 6);
+    		map.put(shortId, originalUrl);
+    	return ResponseEntity.ok(shortId);
+	}
+
     @GetMapping("/{shortId}")
     public void redirect(@PathVariable String shortId, HttpServletResponse response) throws IOException {
     	String originalUrl = map.get(shortId);
