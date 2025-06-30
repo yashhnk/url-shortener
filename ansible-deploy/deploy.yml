@@ -1,0 +1,17 @@
+---
+- name: Deploy URL Shortener App
+  hosts: local
+  become: true
+  tasks:
+
+    - name: Stop and remove existing container (if any)
+      shell: |
+        docker rm -f url-shortener-container || true
+
+    - name: Build Docker image for URL shortener
+      shell: |
+        cd /home/yash-khose/url-shortener && docker build -t url-shortener-app .
+
+    - name: Run new Docker container
+      shell: |
+        docker run -d --name url-shortener-container -p 8082:8080 url-shortener-app
