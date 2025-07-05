@@ -2,9 +2,20 @@
 <html>
 <head>
     <title>URL Shortener</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="shortenForm">
+        <label for="url">Enter URL:</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Shorten</button>
+    </form>
+
+    <div id="result"></div>
+
     <script>
-        async function shortenUrl(event) {
-            event.preventDefault();
+        document.getElementById("shortenForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
             const url = document.getElementById("url").value;
 
             const response = await fetch("/shorten", {
@@ -18,23 +29,9 @@
             const shortId = await response.text();
             const shortUrl = window.location.origin + "/" + shortId;
 
-            document.getElementById("result").innerHTML = 
-		<p>Shortened URL: 
-	    	<a href="https://url-shortener-b0d2.onrender.com/{{ shortId }}">
-        	https://url-shortener-b0d2.onrender.com/{{ shortId }}
-    </a>
-</p>
-
-        }
+            document.getElementById("result").innerHTML =
+                `<p>Shortened URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>`;
+        });
     </script>
-</head>
-<body>
-    <h1>URL Shortener</h1>
-    <form onsubmit="shortenUrl(event)">
-        <label for="url">Enter URL:</label>
-        <input type="text" id="url" name="url" required>
-        <button type="submit">Shorten</button>
-    </form>
-    <div id="result"></div>
 </body>
 </html>
