@@ -1,21 +1,20 @@
 package com.example.urlshortener;
 
-import io.micrometer.core.annotation.Counted;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-@RestController
+@Controller
 public class UrlShortenerController {
 
-    private final HashMap<String, String> map = new HashMap<>();
+    private HashMap<String, String> map = new HashMap<>();
 
     @PostMapping("/shorten")
-    @Counted("shorten_requests_total")
     public ResponseEntity<String> shorten(@RequestParam("url") String originalUrl) {
         String shortId = UUID.randomUUID().toString().substring(0, 6);
         map.put(shortId, originalUrl);
