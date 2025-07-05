@@ -15,10 +15,11 @@ public class UrlShortenerController {
     private HashMap<String, String> map = new HashMap<>();
 
     @PostMapping("/shorten")
-    public ResponseEntity<String> shorten(@RequestParam("url") String originalUrl) {
+    @ResponseBody
+    public String shorten(@RequestParam("url") String originalUrl) {
         String shortId = UUID.randomUUID().toString().substring(0, 6);
         map.put(shortId, originalUrl);
-        return ResponseEntity.ok(shortId);
+        return "<p>Short URL: <a href='/" + shortId + "'>/" + shortId + "</a></p>";
     }
 
     @GetMapping("/{shortId}")
